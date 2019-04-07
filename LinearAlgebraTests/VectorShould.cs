@@ -25,10 +25,7 @@ namespace LinearAlgebraTests
             var firstVector = new Vector(1, 2, 3);
             var secondVector = new Vector(1, 2, 3, 4);
 
-            Assert.ThrowsException<VectorArithmeticException>(() =>
-            {
-                firstVector.AddVector(secondVector);
-            });
+            Assert.ThrowsException<VectorArithmeticException>(() => firstVector.AddVector(secondVector));
         }
 
         [TestMethod]
@@ -59,10 +56,7 @@ namespace LinearAlgebraTests
         {
             var firstVector = new Vector(1, 2, 3);
             var secondVector = new Vector(1, 2, 3, 4);
-            Assert.ThrowsException<VectorArithmeticException>(() =>
-            {
-                firstVector.Dot(secondVector);
-            });
+            Assert.ThrowsException<VectorArithmeticException>(() => firstVector.Dot(secondVector));
         }
 
         [TestMethod]
@@ -133,19 +127,25 @@ namespace LinearAlgebraTests
         [TestMethod]
         public void throws_vector_exception_if_enumeration_passed_in_is_empty()
         {
-            Assert.ThrowsException<VectorException>(() =>
-            {
-                new Vector(new List<double>());
-            });
+            Assert.ThrowsException<VectorException>(() => new Vector(new List<double>()));
         }
 
         [TestMethod]
         public void throws_argument_null_exception_if_null_passed_in()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => 
-            {
-                new Vector(null);
-            });
+            Assert.ThrowsException<ArgumentNullException>(() => new Vector(null));
+        }
+
+        [TestMethod]
+        public void throws_vector_exception_if_size_is_negative()
+        {
+            Assert.ThrowsException<VectorException>(() => new Vector(-1));
+        }
+
+        [TestMethod]
+        public void throws_vector_exception_if_size_is_zero()
+        {
+            Assert.ThrowsException<VectorException>(() => new Vector(0));
         }
     }
 }

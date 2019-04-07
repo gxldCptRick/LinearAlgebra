@@ -8,7 +8,7 @@ using System.Text;
 namespace LinearAlgebra
 {
     /// <summary>
-    /// Represents a mathematical vector of N size.
+    /// Represents a mathematical vector of any size.
     /// </summary>
     public class Vector : IEquatable<Vector>, IEnumerable<double>
     {

@@ -61,6 +61,14 @@ namespace LinearAlgebra
         }
 
         /// <summary>
+        /// Creates a matrix with the given vector values.
+        /// Refer to the IEnumerable constructor for more information about cases.
+        /// </summary>
+        /// <param name="vectors"></param>
+        public Matrix(params Vector[] vectors): this(vectors as IEnumerable<Vector>)
+        { }
+
+        /// <summary>
         /// Creates a new matrix that is the result of adding the current matrix with the given matrix.
         /// </summary>
         /// <param name="other">the matrix to add with.</param>
