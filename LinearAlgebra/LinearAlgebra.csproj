@@ -45,6 +45,7 @@
     <Compile Include="Matrix.cs" />
     <Compile Include="Exceptions\MatrixArithmeticException.cs" />
     <Compile Include="Exceptions\MatrixException.cs" />
+    <Compile Include="MatrixChangedEventArgs.cs" />
     <Compile Include="SystemState.cs" />
     <Compile Include="Vector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -28,8 +28,12 @@ namespace LinearAlgebra
         /// Creates the a vector with the given initial values.
         /// </summary>
         /// <param name="values">the starting values for the vector.</param>
+        /// <exception cref="ArgumentNullException">Throws if values is null</exception>
+        /// <exception cref="VectorException">Throws if values does not contain any elements</exception>
         public Vector(IEnumerable<double> values)
         {
+            if (values is null) throw new ArgumentNullException(nameof(values));
+            if (!values.Any()) throw new VectorException("values must contain at least one element"); 
             this.values = values.ToArray();
         }
 
@@ -37,8 +41,10 @@ namespace LinearAlgebra
         /// Creates a vector that can hold the given amount of values.
         /// </summary>
         /// <param name="size">The number of elements in the vector.</param>
+        /// <exception cref="VectorException">Throws if size is not positive</exception>
         public Vector(int size)
         {
+            if (size < 1) throw new VectorException("size must be a positive integer value.");
             values = new double[size];
         }
 
@@ -46,9 +52,9 @@ namespace LinearAlgebra
         /// Creates a vector with the given arbitrary amount of values.
         /// </summary>
         /// <param name="values">the initial values for the vector.</param>
-        public Vector(params double[] values) : this(values.Length)
+        /// <exception cref="ArgumentNullException">Throws if values is null.   </exception>
+        public Vector(params double[] values): this(values as IEnumerable<double>)
         {
-            values.CopyTo(this.values, 0);
         }
 
         /// <summary>
@@ -74,13 +80,7 @@ namespace LinearAlgebra
         public Vector AddVector(Vector v)
         {
             ValidateVector(v);
-            var addedVector = new Vector(v.MemberLength);
-            for (var i = 0; i < MemberLength; i++)
-            {
-                addedVector[i] = this[i] + v[i];
-            }
-
-            return addedVector;
+            return new Vector(this.Zip(v, (v1, v2) => v1 + v2));
         }
 
         /// <summary>
@@ -100,6 +100,7 @@ namespace LinearAlgebra
         /// <param name="vector">other vector to calculate it</param>
         /// <returns>the dot product result</returns>
         /// <exception cref="VectorArithmeticException">Throws when the member length of the vector passed is diffenrent then this</exception>
+        /// <exception cref="ArgumentNullException">Throws when vector is null</exception>
         public double Dot(Vector vector)
         {
             ValidateVector(vector);
@@ -128,12 +129,12 @@ namespace LinearAlgebra
         public override string ToString()
         {
             var builder = new StringBuilder();
-            bool firstPassed = false;
+            var firstPassed = false;
             foreach (var item in this)
             {
                 if (!firstPassed)
                 {
-                    builder.Append($"{item}");
+                    builder.Append(item.ToString());
                     firstPassed = true;
                 }
                 else

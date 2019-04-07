@@ -1,5 +1,8 @@
 ﻿using LinearAlgebra;
+using LinearAlgebra.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 
 namespace LinearAlgebraTests
 {
@@ -7,11 +10,33 @@ namespace LinearAlgebraTests
     public class VectorShould
     {
         [TestMethod]
+        public void correctly_add_two_vectors_of_equal_length()
+        {
+            var firstVector = new Vector(1, 2, 3, 4);
+            var secondVector = new Vector(4, 3, 2, 1);
+            var expected = new Vector(5, 5, 5, 5);
+            var actual = firstVector.AddVector(secondVector);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void throw_vector_arithemtic_exception_if_add_called_with_vector_of_different_size()
+        {
+            var firstVector = new Vector(1, 2, 3);
+            var secondVector = new Vector(1, 2, 3, 4);
+
+            Assert.ThrowsException<VectorArithmeticException>(() =>
+            {
+                firstVector.AddVector(secondVector);
+            });
+        }
+
+        [TestMethod]
         public void calculate_the_correct_length_of_the_vector()
         {
             var expected = 5d;
             var actual = 0d;
-            var sut = new Vector(new double[] { 3, 4 });
+            var sut = new Vector(3, 4);
             actual = sut.Length;
 
             Assert.AreEqual(expected, actual, .001);
@@ -22,13 +47,23 @@ namespace LinearAlgebraTests
         {
             var expected = 4;
             var actual = 0d;
-            var v1 = new Vector(new double[] { 1, 2 });
-            var v2 = new Vector(new double[] { 2, 1 });
+            var v1 = new Vector(1, 2);
+            var v2 = new Vector(2, 1);
             actual = v1.Dot(v2);
 
             Assert.AreEqual(expected, actual, .001);
         }
 
+        [TestMethod]
+        public void throws_vector_arithmetic_exception_if_dot_product_is_called_with_vector_of_different_length()
+        {
+            var firstVector = new Vector(1, 2, 3);
+            var secondVector = new Vector(1, 2, 3, 4);
+            Assert.ThrowsException<VectorArithmeticException>(() =>
+            {
+                firstVector.Dot(secondVector);
+            });
+        }
 
         [TestMethod]
         public void scale_up_by_two_with_scalar_of_two()
@@ -93,6 +128,24 @@ namespace LinearAlgebraTests
             var v1 = new Vector(new double[] { 1, 1, 1 });
             var other = new object();
             Assert.IsFalse(v1.Equals(other));
+        }
+
+        [TestMethod]
+        public void throws_vector_exception_if_enumeration_passed_in_is_empty()
+        {
+            Assert.ThrowsException<VectorException>(() =>
+            {
+                new Vector(new List<double>());
+            });
+        }
+
+        [TestMethod]
+        public void throws_argument_null_exception_if_null_passed_in()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => 
+            {
+                new Vector(null);
+            });
         }
     }
 }

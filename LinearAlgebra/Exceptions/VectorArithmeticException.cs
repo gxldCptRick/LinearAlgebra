@@ -6,7 +6,7 @@ namespace LinearAlgebra.Exceptions
     /// Represents exceptions that occur due to invalid vector arithmetic.
     /// </summary>
     [Serializable]
-    internal class VectorArithmeticException : VectorException
+    public class VectorArithmeticException : VectorException
     {
         public VectorArithmeticException(string message) : base(message)
         {

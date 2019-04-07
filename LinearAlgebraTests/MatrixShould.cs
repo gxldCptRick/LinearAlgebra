@@ -193,7 +193,7 @@ namespace LinearAlgebraTests
             var firstMatrix = new Matrix(firstValues);
             var secondMatrix = new Matrix(secondValues);
 
-            Assert.ThrowsException<MatrixArithmeticException>(() => 
+            Assert.ThrowsException<MatrixArithmeticException>(() =>
             {
                 firstMatrix.DotMatrix(secondMatrix);
             });
@@ -227,6 +227,7 @@ namespace LinearAlgebraTests
             var sut = new Matrix(matrixData);
             var expected = SystemState.Dependent;
             var actual = SystemState.Inconsistent;
+            sut.MatrixChanged += (s, e) => Console.WriteLine($"{e.Changed} - {DateTime.Now.ToString("MM/dd/yyyy")}");
             actual = sut.CalculateSystemState();
             Assert.AreEqual(expected, actual);
         }
@@ -392,8 +393,48 @@ namespace LinearAlgebraTests
             });
         }
 
+        [TestMethod]
+        public void should_correctly_do_a_single_step_matrix()
+        {
+            var initialValues = new List<Vector>()
+            {
+                new Vector(1, 0, 2),
+                new Vector(1, 1, 2)
+            };
+            var sut = new Matrix(initialValues);
+            var expectedValues = new List<Vector>()
+            {
+                new Vector(1, 0, 2),
+                new Vector(0, 1, 0)
+            };
+            var expected = new Matrix(expectedValues);
+            sut.TranformIntoReducedRowEchelonForm();
+
+            Assert.AreEqual(expected, sut);
+        }
+
+        [TestMethod]
+        public void should_correctly_do_a_solve_the_matrix_with_()
+        {
+            var initialValues = new List<Vector>()
+            {
+                new Vector(1, 2, 2),
+                new Vector(1, 1, 3)
+            };
+            var sut = new Matrix(initialValues);
+            var expectedValues = new List<Vector>()
+            {
+                new Vector(1, 0, 4),
+                new Vector(0, 1, -1)
+            };
+            var expected = new Matrix(expectedValues);
+            sut.TranformIntoReducedRowEchelonForm();
+
+            Assert.AreEqual(expected, sut);
+        }
+
         /// <summary>
-        /// Creates a Matrix that is width x height large and full of nothing but zeros.
+        /// Creates a Matrix that is height x width large and full of nothing but zeros.
         /// </summary>
         /// <param name="width">The amount of columns in the vector</param>
         /// <param name="height">The amount of vectors in the matrix</param>

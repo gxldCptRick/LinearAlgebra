@@ -36,6 +36,11 @@ namespace LinearAlgebra
         public int Height => values.Length;
 
         /// <summary>
+        /// Event to fire if you ever change the state of the Matrix.
+        /// </summary>
+        public event EventHandler<MatrixChangedEventArgs> MatrixChanged;
+
+        /// <summary>
         /// Creates the matrix with the given amount of vectors.
         /// </summary>
         /// <param name="vectors">the vector rows that will make up the matrix.</param>
@@ -131,6 +136,7 @@ namespace LinearAlgebra
         /// <returns>The SystemState enum reprsenting the state.</returns>
         public SystemState CalculateSystemState()
         {
+            TranformIntoReducedRowEchelonForm();
             var solution = SystemState.Inconsistent;
             if (this[Height - 1][Width - 2] == 1)
             {
@@ -143,6 +149,36 @@ namespace LinearAlgebra
             return solution;
 
         }
+
+        /// <summary>
+        /// Reduces each vector rows values until they fit into the reduced row echelon form.
+        /// </summary>
+        public void TranformIntoReducedRowEchelonForm()
+        {
+            for (var i = 0; i < Height && i < (Width - 1); i++)
+            {
+                if (this[i][i] != 0)
+                {
+                    this[i] = this[i].Scale(1 / this[i][i]);
+                }
+                var row = this[i];
+                for (var j = 0; j < Height; j++)
+                {
+                    var item = this[j];
+                    if (item != row && item[i] != 0)
+                    {
+                        var scaledRow = row;
+                        if (item[i] < 0 && scaledRow[i] < 0 || item[i] > 0 && scaledRow[i] > 0)
+                        {
+                            scaledRow = scaledRow.Scale(-1);
+                        }
+                        this[j] = item.AddVector(scaledRow.Scale(item[i]));
+                    }
+                }
+                MatrixChanged?.Invoke(this, new MatrixChangedEventArgs(this));
+            }
+        }
+
 
         /// <summary>
         /// Generates the hashcode using all the values stored in the matrix.
