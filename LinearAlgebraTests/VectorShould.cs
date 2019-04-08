@@ -62,8 +62,8 @@ namespace LinearAlgebraTests
         [TestMethod]
         public void scale_up_by_two_with_scalar_of_two()
         {
-            var sut = new Vector(new double[] { 1, 1, 1, 1 });
-            var expected = new Vector(new double[] { 2, 2, 2, 2 });
+            var sut = new Vector(1, 1, 1, 1);
+            var expected = new Vector(2, 2, 2, 2);
             var actual = sut.Scale(2);
             Assert.AreEqual(expected, actual);
         }
@@ -71,8 +71,8 @@ namespace LinearAlgebraTests
         [TestMethod]
         public void scale_down_by_two_with_scalar_of_one_half()
         {
-            var sut = new Vector(new double[] { 2, 2, 2 });
-            var expected = new Vector(new double[] { 1, 1, 1 });
+            var sut = new Vector(2, 2, 2);
+            var expected = new Vector(1, 1, 1);
             var actual = sut.Scale(.5);
             Assert.AreEqual(expected, actual);
         }
@@ -80,46 +80,46 @@ namespace LinearAlgebraTests
         [TestMethod]
         public void return_true_if_equals_called_with_a_vector_with_the_same_values()
         {
-            var v1 = new Vector(new double[] { 1, 1, 1, 1 });
-            var v2 = new Vector(new double[] { 1, 1, 1, 1 });
+            var v1 = new Vector(1, 1, 1, 1);
+            var v2 = new Vector(1, 1, 1, 1);
             Assert.IsTrue(v1.Equals(v2));
         }
 
         [TestMethod]
         public void return_false_if_equals_called_with_vector_of_different_length()
         {
-            var v1 = new Vector(new double[] { 1, 1, 1, 1 });
-            var v2 = new Vector(new double[] { 1, 1, 1 });
+            var v1 = new Vector(1, 1, 1, 1);
+            var v2 = new Vector(1, 1, 1);
             Assert.IsFalse(v1.Equals(v2));
         }
 
         [TestMethod]
         public void return_false_if_equals_called_with_vector_of_same_length_but_different_values()
         {
-            var v1 = new Vector(new double[] { 1, 1, 1, 1 });
-            var v2 = new Vector(new double[] { 2, 2, 2, 2 });
+            var v1 = new Vector(1, 1, 1, 1);
+            var v2 = new Vector(2, 2, 2, 2);
             Assert.IsFalse(v1.Equals(v2));
         }
 
         [TestMethod]
         public void return_false_if_equals_called_with_null()
         {
-            var vector = new Vector(new double[] { 1, 2, 1, 2 });
+            var vector = new Vector(1, 2, 1, 2);
             Assert.IsFalse(vector.Equals(null));
         }
 
         [TestMethod]
         public void return_true_if_vector_passed_in_with_same_values_is_cast_to_object()
         {
-            var v1 = new Vector(new double[] { 1, 1, 1 });
-            object v2 = new Vector(new double[] { 1, 1, 1 });
+            var v1 = new Vector(1, 1, 1);
+            object v2 = new Vector(1, 1, 1);
             Assert.IsTrue(v1.Equals(v2));
         }
 
         [TestMethod]
         public void return_false_if_any_object_other_than_vector_is_passed_in_to_equals()
         {
-            var v1 = new Vector(new double[] { 1, 1, 1 });
+            var v1 = new Vector(1, 1, 1);
             var other = new object();
             Assert.IsFalse(v1.Equals(other));
         }
