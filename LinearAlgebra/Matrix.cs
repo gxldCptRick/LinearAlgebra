@@ -23,7 +23,11 @@ namespace LinearAlgebra
         public Vector this[int index]
         {
             get => values[index];
-            private set => values[index] = value;
+            private set
+            {
+                values[index] = value;
+                MatrixChanged?.Invoke(this, new MatrixChangedEventArgs(index, value));
+            }
         }
         /// <summary>
         /// The amount of columns the matrix consists of.
@@ -180,10 +184,10 @@ namespace LinearAlgebra
                         {
                             scaledRow = scaledRow.Scale(-1);
                         }
-                        this[j] = item.AddVector(scaledRow.Scale(item[i]));
+                        
+                        this[j] = item.AddVector(scaledRow.Scale(Math.Abs(item[i])));
                     }
                 }
-                MatrixChanged?.Invoke(this, new MatrixChangedEventArgs(this));
             }
         }
 

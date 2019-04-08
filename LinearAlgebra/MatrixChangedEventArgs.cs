@@ -2,14 +2,13 @@
 {
     public class MatrixChangedEventArgs
     {
+        public Vector Changed { get; }
+        public int RowId { get; }
 
-        private readonly Matrix changed;
-
-        public Matrix Changed => changed;
-
-        public MatrixChangedEventArgs(Matrix m)
+        public MatrixChangedEventArgs(int index, Vector m)
         {
-            changed = new Matrix(m);
+            RowId = index;
+            Changed = new Vector(m);
         }
 
     }

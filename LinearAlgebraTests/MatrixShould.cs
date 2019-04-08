@@ -10,6 +10,28 @@ namespace LinearAlgebraTests
     [TestClass]
     public class MatrixShould
     {
+
+        [TestMethod]
+        public void reduced_row_echelon_test_with_three_variables()
+        {
+            var sut = new Matrix(
+                new Vector(2, 3, 4, 5),
+                new Vector(1, 4, 5, 6),
+                new Vector(1, 0, 3, 4));
+
+            var expected = new Matrix(
+                new Vector(1, 0, 0, 1d / 7),
+                new Vector(0, 1, 0, -1d / 7),
+                new Vector(0, 0, 1, 9d / 7));
+
+            sut.MatrixChanged += (s, e) => Debug.WriteLine($"[{e.RowId}]: {{ {e.Changed} }} - {DateTime.Now.ToString("MM/dd/yyyy")}");
+
+            sut.TranformIntoReducedRowEchelonForm();
+            Debug.WriteLine("Launch....");
+            Debug.WriteLine(sut);
+            Assert.AreEqual(expected, sut);
+        }
+
         [TestMethod]
         public void add_another_matrix_correctly()
         {

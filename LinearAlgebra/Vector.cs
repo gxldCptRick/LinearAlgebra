@@ -13,6 +13,16 @@ namespace LinearAlgebra
     public class Vector : IEquatable<Vector>, IEnumerable<double>
     {
         private readonly double[] values;
+        /// <summary>
+        /// Constant Delta for checking equality in Vectors.
+        /// </summary>
+        private const double Delta = .0001;
+
+        /// <summary>
+        /// Constant rounding limit for checking equality in Vectors.
+        /// </summary>
+        private const int RoundingLimit = 8;
+
 
         /// <summary>
         /// The length or magnitude of the current vector.
@@ -33,7 +43,7 @@ namespace LinearAlgebra
         public Vector(IEnumerable<double> values)
         {
             if (values is null) throw new ArgumentNullException(nameof(values));
-            if (!values.Any()) throw new VectorException("values must contain at least one element"); 
+            if (!values.Any()) throw new VectorException("values must contain at least one element");
             this.values = values.ToArray();
         }
 
@@ -53,7 +63,7 @@ namespace LinearAlgebra
         /// </summary>
         /// <param name="values">the initial values for the vector.</param>
         /// <exception cref="ArgumentNullException">Throws if values is null.   </exception>
-        public Vector(params double[] values): this(values as IEnumerable<double>)
+        public Vector(params double[] values) : this(values as IEnumerable<double>)
         {
         }
 
@@ -134,12 +144,12 @@ namespace LinearAlgebra
             {
                 if (!firstPassed)
                 {
-                    builder.Append(item.ToString());
+                    builder.Append($"{item,7:0.00}");
                     firstPassed = true;
                 }
                 else
                 {
-                    builder.Append($", {item}");
+                    builder.Append($", {item,7:0.00}");
                 }
             }
             return builder.ToString();
@@ -182,7 +192,7 @@ namespace LinearAlgebra
             if (other != null && other.MemberLength == MemberLength)
             {
                 var i = 0;
-                for (; i < MemberLength && this[i] == other[i]; i++) ;
+                for (; i < MemberLength && (this[i] == other[i] || Math.Abs(Math.Round(this[i] - other[i], RoundingLimit)) <= Delta); i++) ;
                 isEqual = i == MemberLength;
             }
             return isEqual;

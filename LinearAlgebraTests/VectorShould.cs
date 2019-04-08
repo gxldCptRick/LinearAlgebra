@@ -147,5 +147,23 @@ namespace LinearAlgebraTests
         {
             Assert.ThrowsException<VectorException>(() => new Vector(0));
         }
+
+        [TestMethod]
+        public void be_equal_to_another_vector_given_some_rounding_error()
+        {
+            var v1 = new Vector(0, 0, 1.0010);
+            var v2 = new Vector(0, 0, 1.0011);
+
+            Assert.AreEqual(v1, v2);
+        }
+
+        [TestMethod]
+        public void not_be_equal_to_another_vector_given_some_more_tight_rounding_error()
+        {
+            var v1 = new Vector(0, 0, 1.0010);
+            var v2 = new Vector(0, 0, 1.0012);
+
+            Assert.AreNotEqual(v1, v2);
+        }
     }
 }
