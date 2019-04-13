@@ -69,7 +69,7 @@ namespace LinearAlgebra
         /// Refer to the IEnumerable constructor for more information about cases.
         /// </summary>
         /// <param name="vectors"></param>
-        public Matrix(params Vector[] vectors): this(vectors as IEnumerable<Vector>)
+        public Matrix(params Vector[] vectors) : this(vectors as IEnumerable<Vector>)
         { }
 
         /// <summary>
@@ -184,13 +184,33 @@ namespace LinearAlgebra
                         {
                             scaledRow = scaledRow.Scale(-1);
                         }
-                        
+
                         this[j] = item.AddVector(scaledRow.Scale(Math.Abs(item[i])));
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// Creates a new vector containing the variable answers to the matrix
+        /// </summary>
+        /// <param name="answers"></param>
+        /// <returns>Answers to each number passed in</returns>
+        public Vector SolveEquationUsingDeterminant(Vector answers)
+        {
+            if (answers.Length != Height)
+                throw new MatrixArithmeticException("The vector must have equal numbers to the height of this matrix.");
+            var changingMatrix = this.values.ToArray();
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < answers.Length; j++)
+                {
+                    changingMatrix[j][i] = answers[j];
+                }
+            }
+            //TODO: No solution and Infinitely many should return Nan
+            throw new NotImplementedException("Waiting for method that finds the determinant to find return values");
+        }
 
         /// <summary>
         /// Generates the hashcode using all the values stored in the matrix.
@@ -255,7 +275,7 @@ namespace LinearAlgebra
         /// <returns>An Enumerator that will traverse the rows of the matrix in order.</returns>
         public IEnumerator<Vector> GetEnumerator()
         {
-            return ((IEnumerable<Vector>) values).GetEnumerator();
+            return ((IEnumerable<Vector>)values).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

@@ -219,21 +219,28 @@ namespace LinearAlgebraTests
         [TestMethod]
         public void Multiply_Subtraction_ThreeByTwo_ThreeByFour_Correctly_With_TwoByFour()
         {
-            var firstMatrix = new Matrix(
-                new Vector(2, 4, -1),
-                new Vector(5, 8, 0));
+            var a = new Matrix(
+                new Vector(0, 3, -5),
+                new Vector(1, 2, 6));
 
-            var secondMatrix = new Matrix(
-                new Vector(2, 5, 1, 4),
-                new Vector(4, 8, 0, 6),
-                new Vector(-3, 1, -2, -1));
+            var b = new Matrix(
+                new Vector(4, 1, 0),
+                new Vector(-2, 3, -2));
+
+            var c = new Matrix(
+                new Vector(4, 1),
+                new Vector(6, 2),
+                new Vector(-2, 3));
 
             var expected = new Matrix(
-                new Vector(23, 41, 4, 33),
-                new Vector(42, 89, 5, 68));
+                new Vector(-13, 7, -12),
+                new Vector(-18, 10, -14),
+                new Vector(17, -7, 34));
 
-            var actual = firstMatrix.DotMatrix(secondMatrix);
-
+            var ca = c.DotMatrix(a);
+            var cb = c.DotMatrix(b);
+            //ca - cb
+            var actual = ca.AddMatrix(cb.Scale(-1));
             Assert.AreEqual(expected, actual);
         }
 
