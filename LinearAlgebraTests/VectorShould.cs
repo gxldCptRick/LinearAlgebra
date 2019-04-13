@@ -10,7 +10,7 @@ namespace LinearAlgebraTests
     public class VectorShould
     {
         [TestMethod]
-        public void correctly_add_two_vectors_of_equal_length()
+        public void Correctly_add_two_vectors_of_equal_length()
         {
             var firstVector = new Vector(1, 2, 3, 4);
             var secondVector = new Vector(4, 3, 2, 1);
@@ -20,7 +20,7 @@ namespace LinearAlgebraTests
         }
 
         [TestMethod]
-        public void throw_vector_arithemtic_exception_if_add_called_with_vector_of_different_size()
+        public void Throw_vector_arithemtic_exception_if_add_called_with_vector_of_different_size()
         {
             var firstVector = new Vector(1, 2, 3);
             var secondVector = new Vector(1, 2, 3, 4);
@@ -29,7 +29,7 @@ namespace LinearAlgebraTests
         }
 
         [TestMethod]
-        public void calculate_the_correct_length_of_the_vector()
+        public void Calculate_the_correct_length_of_the_vector()
         {
             var expected = 5d;
             var actual = 0d;
@@ -40,7 +40,7 @@ namespace LinearAlgebraTests
         }
 
         [TestMethod]
-        public void calculate_the_correct_dot_product_between_two_vectors()
+        public void Calculate_the_correct_dot_product_between_two_vectors()
         {
             var expected = 4;
             var actual = 0d;
@@ -52,7 +52,7 @@ namespace LinearAlgebraTests
         }
 
         [TestMethod]
-        public void throws_vector_arithmetic_exception_if_dot_product_is_called_with_vector_of_different_length()
+        public void Throws_vector_arithmetic_exception_if_dot_product_is_called_with_vector_of_different_length()
         {
             var firstVector = new Vector(1, 2, 3);
             var secondVector = new Vector(1, 2, 3, 4);
@@ -60,7 +60,7 @@ namespace LinearAlgebraTests
         }
 
         [TestMethod]
-        public void scale_up_by_two_with_scalar_of_two()
+        public void Scale_up_by_two_with_scalar_of_two()
         {
             var sut = new Vector(1, 1, 1, 1);
             var expected = new Vector(2, 2, 2, 2);
@@ -69,7 +69,7 @@ namespace LinearAlgebraTests
         }
 
         [TestMethod]
-        public void scale_down_by_two_with_scalar_of_one_half()
+        public void Scale_down_by_two_with_scalar_of_one_half()
         {
             var sut = new Vector(2, 2, 2);
             var expected = new Vector(1, 1, 1);
@@ -78,7 +78,7 @@ namespace LinearAlgebraTests
         }
 
         [TestMethod]
-        public void return_true_if_equals_called_with_a_vector_with_the_same_values()
+        public void Return_true_if_equals_called_with_a_vector_with_the_same_values()
         {
             var v1 = new Vector(1, 1, 1, 1);
             var v2 = new Vector(1, 1, 1, 1);
@@ -86,7 +86,7 @@ namespace LinearAlgebraTests
         }
 
         [TestMethod]
-        public void return_false_if_equals_called_with_vector_of_different_length()
+        public void Return_false_if_equals_called_with_vector_of_different_length()
         {
             var v1 = new Vector(1, 1, 1, 1);
             var v2 = new Vector(1, 1, 1);
@@ -94,7 +94,7 @@ namespace LinearAlgebraTests
         }
 
         [TestMethod]
-        public void return_false_if_equals_called_with_vector_of_same_length_but_different_values()
+        public void Return_false_if_equals_called_with_vector_of_same_length_but_different_values()
         {
             var v1 = new Vector(1, 1, 1, 1);
             var v2 = new Vector(2, 2, 2, 2);
@@ -102,14 +102,14 @@ namespace LinearAlgebraTests
         }
 
         [TestMethod]
-        public void return_false_if_equals_called_with_null()
+        public void Return_false_if_equals_called_with_null()
         {
             var vector = new Vector(1, 2, 1, 2);
             Assert.IsFalse(vector.Equals(null));
         }
 
         [TestMethod]
-        public void return_true_if_vector_passed_in_with_same_values_is_cast_to_object()
+        public void Return_true_if_vector_passed_in_with_same_values_is_cast_to_object()
         {
             var v1 = new Vector(1, 1, 1);
             object v2 = new Vector(1, 1, 1);
@@ -117,7 +117,7 @@ namespace LinearAlgebraTests
         }
 
         [TestMethod]
-        public void return_false_if_any_object_other_than_vector_is_passed_in_to_equals()
+        public void Return_false_if_any_object_other_than_vector_is_passed_in_to_equals()
         {
             var v1 = new Vector(1, 1, 1);
             var other = new object();
@@ -125,31 +125,31 @@ namespace LinearAlgebraTests
         }
 
         [TestMethod]
-        public void throws_vector_exception_if_enumeration_passed_in_is_empty()
+        public void Throws_vector_exception_if_enumeration_passed_in_is_empty()
         {
             Assert.ThrowsException<VectorException>(() => new Vector(new List<double>()));
         }
 
         [TestMethod]
-        public void throws_argument_null_exception_if_null_passed_in()
+        public void Throws_argument_null_exception_if_null_passed_in()
         {
             Assert.ThrowsException<ArgumentNullException>(() => new Vector(null));
         }
 
         [TestMethod]
-        public void throws_vector_exception_if_size_is_negative()
+        public void Throws_vector_exception_if_size_is_negative()
         {
             Assert.ThrowsException<VectorException>(() => new Vector(-1));
         }
 
         [TestMethod]
-        public void throws_vector_exception_if_size_is_zero()
+        public void Throws_vector_exception_if_size_is_zero()
         {
             Assert.ThrowsException<VectorException>(() => new Vector(0));
         }
 
         [TestMethod]
-        public void be_equal_to_another_vector_given_some_rounding_error()
+        public void Be_equal_to_another_vector_given_some_rounding_error()
         {
             var v1 = new Vector(0, 0, 1.0010);
             var v2 = new Vector(0, 0, 1.0011);
@@ -158,7 +158,7 @@ namespace LinearAlgebraTests
         }
 
         [TestMethod]
-        public void not_be_equal_to_another_vector_given_some_more_tight_rounding_error()
+        public void Not_be_equal_to_another_vector_given_some_more_tight_rounding_error()
         {
             var v1 = new Vector(0, 0, 1.0010);
             var v2 = new Vector(0, 0, 1.0012);

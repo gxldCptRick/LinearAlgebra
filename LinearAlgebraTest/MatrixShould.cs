@@ -176,66 +176,6 @@ namespace LinearAlgebraTests
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
-        public void Multiply_TwoByThree_ThreeByTwo_Correctly_With_TwoByTwo()
-        {
-            var firstMatrix = new Matrix(
-                new Vector(0, 3, -5),
-                new Vector(1, 2, 6));
-            var secondMatrix = new Matrix(
-                new Vector(4, 1),
-                new Vector(6, 2),
-                new Vector(-2, 3));
-
-            var expected = new Matrix(
-                new Vector(28, -9),
-                new Vector(4, 23));
-            var actual = firstMatrix.DotMatrix(secondMatrix);
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void Multiply_TwoByThree_ThreeByFour_Correctly_With_TwoByFour()
-        {
-            var firstMatrix = new Matrix(
-                new Vector(2, 4, -1),
-                new Vector(5, 8, 0));
-
-            var secondMatrix = new Matrix(
-                new Vector(2, 5, 1, 4),
-                new Vector(4, 8, 0, 6),
-                new Vector(-3, 1, -2, -1));
-
-            var expected = new Matrix(
-                new Vector(23, 41, 4, 33),
-                new Vector(42, 89, 5, 68));
-
-            var actual = firstMatrix.DotMatrix(secondMatrix);
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void Multiply_Subtraction_ThreeByTwo_ThreeByFour_Correctly_With_TwoByFour()
-        {
-            var firstMatrix = new Matrix(
-                new Vector(2, 4, -1),
-                new Vector(5, 8, 0));
-
-            var secondMatrix = new Matrix(
-                new Vector(2, 5, 1, 4),
-                new Vector(4, 8, 0, 6),
-                new Vector(-3, 1, -2, -1));
-
-            var expected = new Matrix(
-                new Vector(23, 41, 4, 33),
-                new Vector(42, 89, 5, 68));
-
-            var actual = firstMatrix.DotMatrix(secondMatrix);
-
-            Assert.AreEqual(expected, actual);
-        }
 
         [TestMethod]
         public void Throw_matrix_arithmetic_exception_when_dot_called_with_matrix_that_has_a_height_different_then_our_width()
@@ -485,7 +425,17 @@ namespace LinearAlgebraTests
             Assert.AreEqual(expected, sut);
         }
 
+        [TestMethod]
+        public void Matrix_Multiplication_TwoByThree_ThreeByTwo()
+        {
+            var firstMatrix = new Matrix(new Vector(0, 3, -5), new Vector(1, 2, 6));
+            var secondMatrix = new Matrix(new Vector(4, 1), new Vector(6, 2), new Vector(-2, 3));
 
+            var expected = new Matrix(new Vector(28, -9), new Vector(4, 23));
+            var actual = firstMatrix.DotMatrix(secondMatrix);
+
+            Assert.AreEqual(expected, actual);
+        }
 
     }
 }
