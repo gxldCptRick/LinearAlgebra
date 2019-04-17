@@ -48,6 +48,27 @@ namespace LinearAlgebraTests
             Assert.AreEqual(expected, actual);
         }
 
+        [TestMethod]
+        public void Determinant_For_1x1_Should_Be_Negative_One()
+        {
+            var m = new Matrix(
+                new Vector(-1));
+
+            double expected = -1;
+            double actual = m.CalculateDeterminant();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Throws_Matrix_Arithmetic_Determinant_Fails_NotASquare()
+        {
+            var m = new Matrix(
+                new Vector(1d),
+                new Vector(2d));
+
+            Assert.ThrowsException<MatrixArithmeticException>(() => m.CalculateDeterminant());
+
+        }
 
         [TestMethod]
         public void Reduced_row_echelon_test_with_three_variables()
