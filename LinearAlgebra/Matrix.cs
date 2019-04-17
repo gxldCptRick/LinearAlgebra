@@ -191,6 +191,66 @@ namespace LinearAlgebra
             }
         }
 
+        public bool IsSquare { get { return Height == Width; } }
+
+        public static double FindDeterminant(Matrix m)
+        {
+            if (m.IsSquare)
+            {
+                return SetupSolvingValues(m);
+            }
+            throw new MatrixArithmeticException("Matrix must be square");
+        }
+
+        private static double SetupSolvingValues(Matrix m)
+        {
+            List<Vector> numbers = new List<Vector>();
+            m = m.SecretSigns();
+            double coefficient = 0;
+            double d = 0;
+            for (int i = 0; i < m.Width; i++)
+            {
+                Vector v = new Vector(m.Width - 1);
+                coefficient = m[0][i];
+                for (int j = 0; j < m.Height; j++)
+                {
+                    int counter = 0;
+                    for (int k = 0; k < m.Width; k++)
+                    {
+                        if (j != i && k != i)
+                            v[counter++] = m[j][k];
+                    }
+                    numbers.Add(v);
+                }
+                SetupSolvingValues(new Matrix(numbers));
+                SolveValues(coefficient, numbers);
+            }
+            return d;
+        }
+
+        private Matrix SecretSigns()
+        {
+            for (int i = 0; i < Height; i++)
+            {
+                for (int j = 0; j < Width; j++)
+                {
+                    if ((j + m.Width * i) % 2 == 1)
+                        this[i][j] = this[i][j] * -1;
+                }
+            }
+            return m;
+        }
+
+        private static void SolveValues(double Coefficient, List<double> numbers)
+        {
+
+        }
+
+        public static string HowDeterminantWasFound(Matrix m)
+        {
+
+        }
+
         /// <summary>
         /// Creates a new vector containing the variable answers to the matrix
         /// </summary>
