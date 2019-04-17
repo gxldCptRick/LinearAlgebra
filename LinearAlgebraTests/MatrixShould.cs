@@ -11,6 +11,43 @@ namespace LinearAlgebraTests
     public class MatrixShould
     {
 
+        [TestMethod]
+        public void Determinant_For_3x3_Should_Be_Negative_24()
+        {
+            var m = new Matrix(
+                new Vector(-4, -3, 3),
+                new Vector(0, 2, -2),
+                new Vector(1, 4, -1));
+
+            double expected = -24;
+            double actual = m.CalculateDeterminant();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Determinant_For_2x2_Should_Be_Negative_2()
+        {
+            var m = new Matrix(
+                new Vector(3, 1),
+                new Vector(4, 2));
+
+            double expected = -2;
+            double actual = m.CalculateDeterminant();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Determinant_For_2x2_Should_Be_Negative_22()
+        {
+            var m = new Matrix(
+                new Vector(6, 4),
+                new Vector(-1, 3));
+
+            double expected = -2;
+            double actual = m.CalculateDeterminant();
+            Assert.AreEqual(expected, actual);
+        }
+
 
         [TestMethod]
         public void Reduced_row_echelon_test_with_three_variables()
