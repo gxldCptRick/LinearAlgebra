@@ -40,17 +40,20 @@ namespace LinearAlgebra
         public int Height => values.Length;
 
         /// <summary>
-        /// Event to fire if you ever change the state of the Matrix.
+        /// Event to fire whenever change the state of the matrix.
         /// </summary>
         public event EventHandler<MatrixChangedEventArgs> MatrixChanged;
-
+        
+        /// <summary>
+        /// Event to fire whenever you create a sub matrix.
+        /// </summary>
         public event EventHandler<MatrixSubEventArgs> MatrixSubCreated;
 
         /// <summary>
         /// Creates a Matrix with the given values with row vectors of the given column count.
         /// </summary>
-        /// <param name="values"></param>
-        /// <param name="columnCount"></param>
+        /// <param name="values">the values that will be in your matrix</param>
+        /// <param name="columnCount">the length of the row vector</param>
         public Matrix(IEnumerable<double> values, int columnCount)
         {
             var totalElements = values.Count();
@@ -210,7 +213,7 @@ namespace LinearAlgebra
             }
         }
 
-        public bool IsSquare { get { return Height == Width; } }
+        public bool IsSquare { get => Height == Width; }
 
         public double CalculateDeterminant()
         {
