@@ -83,7 +83,7 @@ namespace LinearAlgebra
             if (vectors.Count() == 0) throw new MatrixException("You must pass in at least one vector.");
             if (vectors.Any(v => v is null)) throw new MatrixException("No vector can be null.");
             if (vectors.GroupBy(c => c.MemberLength).Count() != 1) throw new MatrixException("All the vectors must be the same size.");
-            values = vectors.ToArray();
+            values = vectors.Select(e => new Vector(e)).ToArray();
         }
 
         /// <summary>
