@@ -45,6 +45,23 @@ namespace LinearAlgebra
         public event EventHandler<MatrixChangedEventArgs> MatrixChanged;
 
         /// <summary>
+        /// Creates a Matrix with the given values with row vectors of the given column count.
+        /// </summary>
+        /// <param name="values"></param>
+        /// <param name="columnCount"></param>
+        public Matrix(IEnumerable<double> values, int columnCount)
+        {
+            var totalElements = values.Count();
+            if (totalElements % columnCount != 0) throw new MatrixException("All the vectors must have an equal length");
+            var totalRows = totalElements / columnCount;
+            this.values = new Vector[totalRows];
+            for (int offset = 0; offset < this.values.Length; offset++)
+            {
+                this.values[offset] = new Vector(values.Skip(offset * columnCount).Take(columnCount));
+            }
+        }
+
+        /// <summary>
         /// Creates the matrix with the given amount of vectors.
         /// </summary>
         /// <param name="vectors">the vector rows that will make up the matrix.</param>
@@ -193,62 +210,48 @@ namespace LinearAlgebra
 
         public bool IsSquare { get { return Height == Width; } }
 
-        public static double FindDeterminant(Matrix m)
+        public double CalculateDeterminant()
         {
-            if (m.IsSquare)
-            {
-                return SetupSolvingValues(m);
-            }
-            throw new MatrixArithmeticException("Matrix must be square");
+            if(!IsSquare)
+                throw new MatrixArithmeticException("Matrix must be square");
+            return CalculateDeterminant(this);
         }
 
-        private static double SetupSolvingValues(Matrix m)
+        private double CalculateDeterminant(Matrix m)
         {
-            List<Vector> numbers = new List<Vector>();
-            m = m.SecretSigns();
-            double coefficient = 0;
-            double d = 0;
-            for (int i = 0; i < m.Width; i++)
+            var determinate = 0d;
+            if (m.Height == 2)
             {
-                Vector v = new Vector(m.Width - 1);
-                coefficient = m[0][i];
-                for (int j = 0; j < m.Height; j++)
+                determinate = m[0][0] * m[1][1] - m[0][1] * m[0][2];
+            }
+            else if (m.Height == 1)
+            {
+                determinate = m[0][0];
+            }
+            else
+            {
+                var y = 0;
+                for (var x = 0; x < m.Width; x++)
                 {
-                    int counter = 0;
-                    for (int k = 0; k < m.Width; k++)
-                    {
-                        if (j != i && k != i)
-                            v[counter++] = m[j][k];
-                    }
-                    numbers.Add(v);
+                    var subMatrix = BuildSubMatrix(x, y, m.Width);
+                    determinate += m[y][x] * CalculateDeterminant(subMatrix) * CalculateSecretSign(x, y, m.Width);
                 }
-                SetupSolvingValues(new Matrix(numbers));
-                SolveValues(coefficient, numbers);
+
             }
-            return d;
+
+
+            return determinate;
         }
 
-        private Matrix SecretSigns()
+        private double CalculateSecretSign(int x, int y, int width)
         {
-            for (int i = 0; i < Height; i++)
-            {
-                for (int j = 0; j < Width; j++)
-                {
-                    if ((j + m.Width * i) % 2 == 1)
-                        this[i][j] = this[i][j] * -1;
-                }
-            }
-            return m;
+            return (x + y * width) % 2 == 0 ? 1 : -1;  
         }
 
-        private static void SolveValues(double Coefficient, List<double> numbers)
+        private Matrix BuildSubMatrix(int x, int y, int width)
         {
-
-        }
-
-        public static string HowDeterminantWasFound(Matrix m)
-        {
-
+            var matrixValues = new List<double>();
+            throw new NotImplementedException();
         }
 
         /// <summary>
