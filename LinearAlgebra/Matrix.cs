@@ -44,6 +44,8 @@ namespace LinearAlgebra
         /// </summary>
         public event EventHandler<MatrixChangedEventArgs> MatrixChanged;
 
+        public event EventHandler<MatrixSubEventArgs> MatrixSubCreated;
+
         /// <summary>
         /// Creates a Matrix with the given values with row vectors of the given column count.
         /// </summary>
@@ -222,7 +224,7 @@ namespace LinearAlgebra
             var determinate = 0d;
             if (m.Height == 2)
             {
-                determinate = m[0][0] * m[1][1] - m[0][1] * m[0][2];
+                determinate = m[0][0] * m[1][1] - m[0][1] * m[1][0];
             }
             else if (m.Height == 1)
             {
@@ -233,7 +235,8 @@ namespace LinearAlgebra
                 var y = 0;
                 for (var x = 0; x < m.Width; x++)
                 {
-                    var subMatrix = BuildSubMatrix(x, y, m.Width);
+                    var subMatrix = m.BuildSubMatrix(x, y);
+                    MatrixSubCreated?.Invoke(this, new MatrixSubEventArgs(subMatrix));
                     determinate += m[y][x] * CalculateDeterminant(subMatrix) * CalculateSecretSign(x, y, m.Width);
                 }
 
@@ -248,10 +251,20 @@ namespace LinearAlgebra
             return (x + y * width) % 2 == 0 ? 1 : -1;  
         }
 
-        private Matrix BuildSubMatrix(int x, int y, int width)
+        public Matrix BuildSubMatrix(int x, int y)
         {
-            var matrixValues = new List<double>();
-            throw new NotImplementedException();
+            var matrixValues = new List<double>(Width * Height);
+            for (int row = 0; row < Height; row++)
+            {
+                for (int column = 0; column < Width; column++)
+                {
+                    if (row != y && column != x)
+                    {
+                        matrixValues.Add(this[row][column]);
+                    }
+                }
+            }
+            return new Matrix(matrixValues, Width - 1);
         }
 
         /// <summary>
