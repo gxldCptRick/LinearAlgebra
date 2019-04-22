@@ -29,6 +29,13 @@ namespace LinearAlgebra
         /// </summary>
         public double Length => Math.Sqrt(Dot(this));
 
+
+        /// <summary>
+        /// The unit vector that represents the direction that the vector is going.
+        /// </summary>
+        public Vector UnitVector => this.Scale(1 / Length);
+
+
         /// <summary>
         /// The amount of elements this vector can hold.
         /// </summary>
