@@ -51,6 +51,7 @@
     <Compile Include="Vector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Exceptions\VectorArithmeticException.cs" />
+    <Compile Include="VectorR3.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

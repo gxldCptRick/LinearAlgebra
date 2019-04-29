@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MatrixShould.cs" />
+    <Compile Include="VectorR3Should.cs" />
     <Compile Include="VectorShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

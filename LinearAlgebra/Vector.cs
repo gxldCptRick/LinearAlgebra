@@ -49,8 +49,16 @@ namespace LinearAlgebra
         /// <exception cref="VectorException">Throws if values does not contain any elements</exception>
         public Vector(IEnumerable<double> values)
         {
-            if (values is null) throw new ArgumentNullException(nameof(values));
-            if (!values.Any()) throw new VectorException("values must contain at least one element");
+            if (values is null)
+            {
+                throw new ArgumentNullException(nameof(values));
+            }
+
+            if (!values.Any())
+            {
+                throw new VectorException("values must contain at least one element");
+            }
+
             this.values = values.ToArray();
         }
 
@@ -61,7 +69,11 @@ namespace LinearAlgebra
         /// <exception cref="VectorException">Throws if size is not positive</exception>
         public Vector(int size)
         {
-            if (size < 1) throw new VectorException("size must be a positive integer value.");
+            if (size < 1)
+            {
+                throw new VectorException("size must be a positive integer value.");
+            }
+
             values = new double[size];
         }
 
@@ -82,8 +94,20 @@ namespace LinearAlgebra
         /// <exception cref="IndexOutOfRangeException">Thrown when index is out of range of vector</exception>
         public double this[int index]
         {
-            get => values[index];
-            set => values[index] = value;
+            get => values[ValidateIndex(index)];
+            set => values[ValidateIndex(index)] = value;
+        }
+
+        /// <summary>
+        /// Validates that index is within the bounds of the vector.
+        /// It throws IndexOutOfRange if it is not.
+        /// </summary>
+        /// <param name="index">position in vector to check.</param>
+        /// <returns>the index given.</returns>
+        private int ValidateIndex(int index)
+        {
+            if (index < 0 || index >= MemberLength) throw new IndexOutOfRangeException("index out of bound of vector");
+            return index;
         }
 
 
@@ -110,6 +134,17 @@ namespace LinearAlgebra
             return new Vector(this.Select(v => v * scalar));
         }
 
+        /// <summary>
+        /// Calculates a the distance between two vectors.
+        /// </summary>
+        /// <param name="vector">the vector to compare with</param>
+        /// <returns>the distance</returns>
+        public double DistanceBetweenVector(Vector vector)
+        {
+            ValidateVector(vector);
+            var vectorBetween = this.AddVector(vector.Scale(-1));
+            return vector.Length;
+        }
 
         /// <summary>
         /// Calculates the dot product between two vectors.
@@ -133,10 +168,17 @@ namespace LinearAlgebra
         /// Validate a vector parameter to meet the basic requirments and throws the appropriate exception if not.
         /// </summary>
         /// <param name="vector">vector paramter to check</param>
-        private void ValidateVector(Vector vector)
+        protected void ValidateVector(Vector vector)
         {
-            if (vector is null) throw new ArgumentNullException(nameof(vector));
-            if (vector.MemberLength != MemberLength) throw new VectorArithmeticException("Vectors must have a matching amount of members.");
+            if (vector is null)
+            {
+                throw new ArgumentNullException(nameof(vector), "Vector cannot be null.");
+            }
+
+            if (vector.MemberLength != MemberLength)
+            {
+                throw new VectorArithmeticException("Vectors must have a matching amount of members.");
+            }
         }
 
         /// <summary>
@@ -161,6 +203,27 @@ namespace LinearAlgebra
             }
             return builder.ToString();
         }
+
+        /// <summary>
+        /// Calculates The angle between this vector and the vector passed in.
+        /// </summary>
+        /// <param name="otherVector">the vector to compare too.</param>
+        /// <returns>the angle between in radians.</returns>
+        public double AngleBetweenVectors(Vector otherVector)
+        {
+            ValidateVector(otherVector);
+            return Math.Acos(this.Dot(otherVector)/(this.Length * otherVector.Length));
+        }
+
+        public (Vector v1, Vector v2) DecomposeVector(Vector otherVector)
+        {
+            ValidateVector(otherVector);
+            var scalarToUse = (this.Dot(otherVector) / otherVector.Dot(otherVector));
+            var v1 = otherVector.Scale(scalarToUse);
+            var v2 = this.AddVector(v1.Scale(-1));
+            return (v1, v2);
+        }
+
 
         /// <summary>
         /// Calculates the hashcode by using all the values stored within the vector.
@@ -194,12 +257,16 @@ namespace LinearAlgebra
         /// <returns>whether a given vector has the same values as the current vector</returns>
         public bool Equals(Vector other)
         {
-            if (other == this) return true;
+            if (other == this)
+            {
+                return true;
+            }
+
             var isEqual = false;
             if (other != null && other.MemberLength == MemberLength)
             {
                 var i = 0;
-                for (; i < MemberLength && (this[i] == other[i] || Math.Abs(Math.Round(this[i] - other[i], RoundingLimit)) <= Delta); i++) ;
+                for (; i < MemberLength && (this[i] == other[i] || Math.Abs(Math.Round(this[i] - other[i], RoundingLimit)) <= Delta); i++);
                 isEqual = i == MemberLength;
             }
             return isEqual;
@@ -211,7 +278,7 @@ namespace LinearAlgebra
         /// <returns>Ienumerator object that traverses vector in order.</returns>
         public IEnumerator<double> GetEnumerator()
         {
-            return ((IEnumerable<double>) values).GetEnumerator();
+            return ((IEnumerable<double>)values).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

@@ -31,7 +31,7 @@ namespace LinearAlgebraTests
                 new Vector(3, 1),
                 new Vector(4, 2));
 
-            double expected = -2;
+            double expected = 2;
             double actual = m.CalculateDeterminant();
             Assert.AreEqual(expected, actual);
         }
@@ -43,7 +43,7 @@ namespace LinearAlgebraTests
                 new Vector(6, 4),
                 new Vector(-1, 3));
 
-            double expected = -2;
+            double expected = 22;
             double actual = m.CalculateDeterminant();
             Assert.AreEqual(expected, actual);
         }
@@ -52,7 +52,7 @@ namespace LinearAlgebraTests
         public void Determinant_For_1x1_Should_Be_Negative_One()
         {
             var m = new Matrix(
-                new Vector(-1));
+                new Vector(-1d));
 
             double expected = -1;
             double actual = m.CalculateDeterminant();
