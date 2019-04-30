@@ -54,7 +54,7 @@ namespace LinearAlgebra
             {
                 X = this.Y * third.Z - third.Y * this.Z,
                 Y = this.Z * third.X - third.Z * this.X,
-                Z = this.Y * third.X - third.Y * this.X
+                Z = this.X * third.Y - third.X * this.Y
             };
         }
 

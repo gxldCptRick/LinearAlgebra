@@ -36,5 +36,23 @@ namespace LinearAlgebraTests
                 Assert.AreEqual(expected[i], actual[i]);
             }
         }
+
+        [TestMethod]
+        public void CompareVectorsCorrectly()
+        {
+            var expected = new VectorR3(1, 2, 3);
+            var actual = new VectorR3(1, 2, 3);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CalculateCorrectCrossVector()
+        {
+            var first = new VectorR3(-5, 1, 3);
+            var second = new VectorR3(4, -13, 9);
+            var cross = first.CrossProduct(second);
+            Assert.AreEqual(0, first.Dot(cross), "The cross was not perpendicular to the first.");
+            Assert.AreEqual(0, second.Dot(cross), "The cross was not perpendicular to the second.");
+        }
     }
 }
