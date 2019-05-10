@@ -78,6 +78,59 @@ namespace LinearAlgebra
         }
 
         /// <summary>
+        /// Projects losing the specified dimension.
+        /// </summary>
+        /// <param name="dimension">the dimesion to erase.</param>
+        /// <returns>the resulting vector</returns>
+        public Vector Project(int dimension)
+        {
+            if (dimension >= MemberLength) throw new VectorArithmeticException("Cannot Project onto a dimension that does not exist.");
+            var vectors = new Vector[this.MemberLength];
+            for (int i = 0; i < vectors.Length; i++)
+            {
+                vectors[i] = new Vector(this.MemberLength);
+                if (i != dimension)
+                {
+                    vectors[i][i] = 1;
+                }
+            }
+            return this.Transform(new Matrix(vectors));
+        }
+        /// <summary>
+        /// Reflects on the specified dimension
+        /// </summary>
+        /// <param name="dimension">dimesion to reflect over</param>
+        /// <returns>the resulting vector of the transformation.</returns>
+        public Vector Reflect(int dimension)
+        {
+            if (dimension >= MemberLength) throw new VectorArithmeticException("Cannot reflect on a dimension that does not exist.");
+            var vectors = new Vector[this.MemberLength];
+            for (int i = 0; i < vectors.Length; i++)
+            {
+                vectors[i] = new Vector(this.MemberLength);
+                if (i != dimension)
+                {
+                    vectors[i][i] = 1;
+                }
+                else
+                {
+                    vectors[i][i] = -1;
+                }
+            }
+            return this.Transform(new Matrix(vectors));
+        }
+
+        /// <summary>
+        /// transforms the vector with the given matrix.
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
+        public Vector Transform(Matrix m)
+        {
+            return m.DotVector(this);
+        }
+
+        /// <summary>
         /// Creates a vector with the given arbitrary amount of values.
         /// </summary>
         /// <param name="values">the initial values for the vector.</param>

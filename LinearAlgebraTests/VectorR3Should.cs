@@ -1,7 +1,7 @@
-﻿using System;
-using LinearAlgebra;
+﻿using LinearAlgebra;
 using LinearAlgebra.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace LinearAlgebraTests
 {
@@ -53,6 +53,14 @@ namespace LinearAlgebraTests
             var cross = first.CrossProduct(second);
             Assert.AreEqual(0, first.Dot(cross), "The cross was not perpendicular to the first.");
             Assert.AreEqual(0, second.Dot(cross), "The cross was not perpendicular to the second.");
+        }
+
+        [TestMethod]
+        public void MyTestMethod()
+        {
+            var first = new VectorR3(2, 1, 0);
+            var second = new VectorR3(2, 1, 1);
+            System.Console.WriteLine(first.AngleBetweenVectorsSin(second));
         }
     }
 }

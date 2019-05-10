@@ -66,6 +66,16 @@ namespace LinearAlgebra
             }
         }
 
+        public Vector DotVector(Vector vector)
+        {
+            var resultingVector = new Vector(Height);
+            for (var i = 0; i < Height; i++)
+            {
+                resultingVector[i] = this[i].Dot(vector);
+            }
+            return resultingVector;
+        }
+
         /// <summary>
         /// Creates the matrix with the given amount of vectors.
         /// </summary>
