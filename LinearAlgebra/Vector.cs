@@ -96,6 +96,17 @@ namespace LinearAlgebra
             }
             return this.Transform(new Matrix(vectors));
         }
+        public Vector RankUp()
+        {
+            var doubles = new List<double>(this);
+            doubles.Add(1);
+            return new Vector(doubles);
+        }
+
+        public Vector RankDown()
+        {
+            return new Vector(this.Take(this.MemberLength - 1));
+        }
         /// <summary>
         /// Reflects on the specified dimension
         /// </summary>

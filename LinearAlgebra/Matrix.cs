@@ -76,6 +76,25 @@ namespace LinearAlgebra
             return resultingVector;
         }
 
+
+        public Matrix Cushion()
+        {
+            IList<Vector> vectors = new List<Vector>(this);
+            for (int i = 0; i < vectors.Count; i++)
+            {
+                vectors[i] = vectors[i].RankUp();
+                vectors[i][Width] = 0;
+            }
+            var lastVector = new List<double>();
+            for (int i = 0; i < lastVector.Count; i++)
+            {
+                lastVector.Add(0);
+            }
+            lastVector.Add(1);
+            vectors.Add(new Vector(lastVector));
+            return new Matrix(vectors);
+        }
+
         /// <summary>
         /// Creates the matrix with the given amount of vectors.
         /// </summary>

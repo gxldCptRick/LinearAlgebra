@@ -2,13 +2,76 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LinearAlgebra
 {
     public class VectorR3 : Vector
     {
+        public static Matrix CreateRotationMatrixDegX(double deg)
+        {
+            return CreateRotationMatrixRadsX(deg * Math.PI / 180);
+        }
+
+        public static Matrix CreateRotationMatrixRadsX(double rads)
+        {
+            return new Matrix(
+                new Vector(1, 0, 0),
+                new Vector(0, Math.Cos(rads), -Math.Sin(rads)),
+                new Vector(0, Math.Sin(rads), Math.Cos(rads)));
+        }
+        public static Matrix CreateRotationMatrixDegY(double deg)
+        {
+            return CreateRotationMatrixRadsY(deg * Math.PI / 180);
+        }
+
+        public static Matrix CreateRotationMatrixRadsY(double rads)
+        {
+            return new Matrix(
+                new Vector(Math.Cos(rads), 0, Math.Sin(rads)),
+                new Vector(0, 1, 0),
+                new Vector(-Math.Sin(rads), 0, Math.Cos(rads)));
+        }
+
+        public static Matrix CreateRotationMatrixDegZ(double deg)
+        {
+            return CreateRotationMatrixRadsZ(deg * Math.PI / 180);
+        }
+
+        public static Matrix CreateRotationMatrixRadsZ(double rads)
+        {
+            return new Matrix(
+                new Vector(1, 0, 0),
+                new Vector(0, Math.Cos(rads), -Math.Sin(rads)),
+                new Vector(0, Math.Sin(rads), Math.Cos(rads)));
+        }
+
+        public static Matrix CreateSkewMatrixXAndY(double x, double y)
+        {
+            return new Matrix(
+                new Vector(1, 0, x),
+                new Vector(0, 1, y),
+                new Vector(0, 0, 1)
+                );
+        }
+
+        public static Matrix CreateSkewMatrixXAndZ(double x, double z)
+        {
+            return new Matrix(
+                new Vector(1, x, 0),
+                new Vector(0, 1, 0),
+                new Vector(0, z, 1)
+                );
+        }
+
+        public static Matrix CreateSkewMatrixZAndY(double y, double z)
+        {
+            return new Matrix(
+                new Vector(1, 0, 0),
+                new Vector(y, 1, 0),
+                new Vector(z, 0, 1)
+                );
+        }
+
         /// <summary>
         /// This is the first element in the Vector called X
         /// </summary>
@@ -43,7 +106,10 @@ namespace LinearAlgebra
         /// <param name="values">the initial values of the vector</param>
         public VectorR3(IEnumerable<double> values) : base(values)
         {
-            if (values.Count() != 3) throw new VectorException("The VectorR3 must have exactly 3 values");
+            if (values.Count() != 3)
+            {
+                throw new VectorException("The VectorR3 must have exactly 3 values");
+            }
         }
 
 
@@ -52,14 +118,37 @@ namespace LinearAlgebra
             ValidateVector(third);
             return new VectorR3
             {
-                X = this.Y * third.Z - third.Y * this.Z,
-                Y = this.Z * third.X - third.Z * this.X,
-                Z = this.X * third.Y - third.X * this.Y
+                X = Y * third.Z - third.Y * Z,
+                Y = Z * third.X - third.Z * X,
+                Z = X * third.Y - third.X * Y
             };
         }
 
-        public double AngleBetweenVectorsSin(VectorR3 otherVector) => Math.Asin(this.CrossProduct(otherVector).Length/(this.Length * otherVector.Length));
-          
-        
+        public Matrix CreateAffineMatrix(int changeInX, int changeInY, int changeInZ)
+        {
+            return new Matrix(
+                new Vector(1, 0, 0, changeInX),
+                new Vector(0, 1, 0, changeInY),
+                new Vector(0, 0, 1, changeInZ),
+                new Vector(0, 0, 0, 1));
+        }
+
+        public VectorR3 AffineTranformation(int changeInX, int changeInY, int changeInZ)
+        {
+            return new VectorR3(RankUp().Transform(CreateAffineMatrix(changeInX, changeInY, changeInZ)).RankDown());
+        }
+
+        public VectorR3 ChainAffineTransformation(int changeInX, int changeInY, int changeInZ, params Matrix[] chaining)
+        {
+            var matrix = chaining.Select(m => m.Cushion())
+                .Append(CreateAffineMatrix(changeInX, changeInY, changeInZ))
+                .Reverse()
+                .Aggregate((a, o) =>  a.DotMatrix(o));
+            return new VectorR3(RankUp().Transform(matrix).RankDown());
+        }
+        public double AngleBetweenVectorsSin(VectorR3 otherVector)
+        {
+            return Math.Asin(CrossProduct(otherVector).Length / (Length * otherVector.Length));
+        }
     }
 }
