@@ -16,5 +16,13 @@ namespace LinearAlgebra.Exceptions
         {
         }
 
+        public MatrixException()
+        {
+        }
+
+        protected MatrixException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

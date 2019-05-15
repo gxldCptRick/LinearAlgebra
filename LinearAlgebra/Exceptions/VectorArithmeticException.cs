@@ -16,5 +16,12 @@ namespace LinearAlgebra.Exceptions
         {
         }
 
+        public VectorArithmeticException()
+        {
+        }
+
+        protected VectorArithmeticException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext): base(serializationInfo, streamingContext)
+        { 
+        }
     }
 }

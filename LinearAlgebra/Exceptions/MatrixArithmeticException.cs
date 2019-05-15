@@ -15,5 +15,13 @@ namespace LinearAlgebra.Exceptions
         public MatrixArithmeticException(string message, Exception innerException) : base(message, innerException)
         {
         }
+
+        public MatrixArithmeticException()
+        {
+        }
+
+        protected MatrixArithmeticException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext):base(serializationInfo, streamingContext)
+        {
+        }
     }
 }

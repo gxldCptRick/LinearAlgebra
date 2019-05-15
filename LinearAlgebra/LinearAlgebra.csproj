@@ -42,17 +42,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\VectorException.cs" />
-    <Compile Include="LinearTranformationFactory.cs" />
+    <Compile Include="MathHelpers\LinearTranformationFactory.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="Exceptions\MatrixArithmeticException.cs" />
     <Compile Include="Exceptions\MatrixException.cs" />
-    <Compile Include="MatrixChangedEventArgs.cs" />
-    <Compile Include="MatrixMinorEventArgs.cs" />
-    <Compile Include="SystemState.cs" />
+    <Compile Include="Events\MatrixChangedEventArgs.cs" />
+    <Compile Include="Events\MatrixMinorEventArgs.cs" />
+    <Compile Include="MathHelpers\SystemState.cs" />
     <Compile Include="Vector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Exceptions\VectorArithmeticException.cs" />
-    <Compile Include="VectorFactory.cs" />
+    <Compile Include="Creations\VectorFactory.cs" />
     <Compile Include="VectorR2.cs" />
     <Compile Include="VectorR3.cs" />
   </ItemGroup>
