@@ -8,7 +8,7 @@ namespace LinearAlgebra
 {
     public class LinearTranformationFactory
     {
-        public static Matrix OrthgonalProjection(int size, int dimension)
+        public Matrix OrthgonalProjection(int size, int dimension)
         {
             if (dimension >= size) throw new ArgumentOutOfRangeException("dimension does not exist for the given size.");
             var vectors = new Vector[size];
@@ -23,18 +23,30 @@ namespace LinearAlgebra
             return new Matrix(vectors);
         }
 
-        public static Matrix Scale(int size, int scaleFactor)
+        public Matrix Scale(int size, int dimension, double scale)
         {
             var vectors = new Vector[size];
             for (int i = 0; i < vectors.Length; i++)
             {
                 vectors[i] = new Vector(size);
-                vectors[i][i] = scaleFactor;
+                vectors[i][i] = dimension == i ? scale : 1;
             }
             return new Matrix(vectors);
         }
 
-        public static Matrix Reflection(int size, int dimension)
+        public Matrix Shear(int size, int dimension, double shear)
+        {
+            var vectors = new Vector[size];
+            for (int i = 0; i < vectors.Length; i++)
+            {
+                vectors[i] = new Vector(size);
+                vectors[i][dimension] = shear;
+                vectors[i][i] = 1;
+            }
+            return new Matrix(vectors);
+        }
+
+        public Matrix Reflection(int size, int dimension)
         {
             var vectors = new Vector[size];
             for (int i = 0; i < vectors.Length; i++)
@@ -45,7 +57,7 @@ namespace LinearAlgebra
             return new Matrix(vectors);
         }
 
-        public static Matrix MatrixConcatenation(params Matrix[] concat)
+        public Matrix ConcatMatrices(params Matrix[] concat)
         {
             return concat.Reverse().Aggregate((a, o) => a.DotMatrix(o));
         }

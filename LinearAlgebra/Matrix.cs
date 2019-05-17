@@ -12,7 +12,10 @@ namespace LinearAlgebra
     /// </summary>
     public class Matrix : IEquatable<Matrix>, IEnumerable<Vector>
     {
+        public bool IsSquare { get => Height == Width; }
+        public bool IsOrthogonal { get => Math.Abs(Math.Round(this.CalculateDeterminant(), Precision)) == 1; }
         private Vector[] values;
+        private const int Precision = 2;
 
         /// <summary>
         /// Gets the vector row at the given index in the matrix.
@@ -86,11 +89,12 @@ namespace LinearAlgebra
                 vectors[i][Width] = 0;
             }
             var lastVector = new List<double>();
-            for (int i = 0; i < lastVector.Count; i++)
+            for (int i = 0; i < Width; i++)
             {
                 lastVector.Add(0);
             }
-            lastVector.Add(1);
+            
+           lastVector.Add(1);
             vectors.Add(new Vector(lastVector));
             return new Matrix(vectors);
         }
@@ -241,9 +245,6 @@ namespace LinearAlgebra
                 }
             }
         }
-
-        public bool IsSquare { get => Height == Width; }
-
         public double CalculateDeterminant()
         {
             if(!IsSquare)

@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\VectorException.cs" />
-    <Compile Include="MathHelpers\LinearTranformationFactory.cs" />
+    <Compile Include="Creations\LinearTranformationFactory.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="Exceptions\MatrixArithmeticException.cs" />
     <Compile Include="Exceptions\MatrixException.cs" />

@@ -8,7 +8,7 @@ namespace LinearAlgebra
 {
     public class VectorFactory
     {
-        Vector CreateVector(params double[] values) 
+        public Vector CreateVector(params double[] values) 
         {
             switch (values.Length)
             {

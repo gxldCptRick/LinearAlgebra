@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static System.Math;
 
 namespace LinearAlgebra
 {
@@ -24,6 +25,23 @@ namespace LinearAlgebra
             return CreateRotationMatrixRadsY(deg * Math.PI / 180);
         }
 
+        public static Matrix CreateProjectionMatrix(VectorR3 n)
+        {
+            return new Matrix(
+                new Vector(1 - n.X * n.X, -n.X * n.Y, -n.X * n.Z),
+                new Vector(-n.Y * n.X, 1 - n.Y * n.Y, -n.Y * n.Z),
+                new Vector(-n.Z * n.X, -n.Z * n.Y, 1 - n.Z * n.Z));
+        }
+
+        public static Matrix CreateReflection(VectorR3 n)
+        {
+            return new Matrix(
+                new Vector(1 - 2 * n.X * n.X, -2 * n.X * n.Y, -2 * n.X * n.Z),
+                new Vector(-2 * n.Y * n.X, 1 - 2 * n.Y * n.Y, -2 * n.Y * n.Z),
+                new Vector(-2 * n.Z * n.X, -2 * n.Z * n.Y, 1 - 2 * n.Z * n.Z)
+                );
+        }
+
         public static Matrix CreateRotationMatrixRadsY(double rads)
         {
             return new Matrix(
@@ -40,9 +58,35 @@ namespace LinearAlgebra
         public static Matrix CreateRotationMatrixRadsZ(double rads)
         {
             return new Matrix(
-                new Vector(1, 0, 0),
-                new Vector(0, Math.Cos(rads), -Math.Sin(rads)),
-                new Vector(0, Math.Sin(rads), Math.Cos(rads)));
+                new Vector(Cos(rads), -Sin(rads), 0),
+                new Vector(Sin(rads), Cos(rads), 0),
+                new Vector(0, 0, 1));
+        }
+
+        public static Matrix CreateRotationMatrixAboutVectorDegs(double deg, VectorR3 about)
+        {
+            return CreateRotationMatrixAboutVectorRads(deg * PI / 180, about);
+        }
+
+        private static Matrix CreateRotationMatrixAboutVectorRads(double rads, VectorR3 about)
+        {
+            var cosineOfAngle = Cos(rads);
+            var differenceFromOne = 1 - cosineOfAngle;
+            var sineOfAngle = Sin(rads);
+
+            return new Matrix(
+                new Vector(
+                    about.X * about.X * differenceFromOne + cosineOfAngle,
+                    about.X * about.Y * differenceFromOne - about.Z * sineOfAngle,
+                    about.X * about.Z * differenceFromOne + about.Y * sineOfAngle),
+                new Vector(
+                    about.X * about.Y * differenceFromOne + about.Z * sineOfAngle,
+                    about.Y * about.Y * differenceFromOne + cosineOfAngle,
+                    about.Y * about.Z * differenceFromOne - about.X * sineOfAngle),
+                new Vector(
+                    about.X * about.Z * differenceFromOne - about.Y * sineOfAngle,
+                    about.Z * about.Y * differenceFromOne + about.X * sineOfAngle,
+                    about.Z * about.Z * differenceFromOne + cosineOfAngle));
         }
 
         public static Matrix CreateSkewMatrixXAndY(double x, double y)
@@ -124,7 +168,7 @@ namespace LinearAlgebra
             };
         }
 
-        public Matrix CreateAffineMatrix(int changeInX, int changeInY, int changeInZ)
+        public static Matrix CreateAffineMatrix(int changeInX, int changeInY, int changeInZ)
         {
             return new Matrix(
                 new Vector(1, 0, 0, changeInX),
@@ -143,7 +187,7 @@ namespace LinearAlgebra
             var matrix = chaining.Select(m => m.Cushion())
                 .Append(CreateAffineMatrix(changeInX, changeInY, changeInZ))
                 .Reverse()
-                .Aggregate((a, o) =>  a.DotMatrix(o));
+                .Aggregate((a, o) => a.DotMatrix(o));
             return new VectorR3(RankUp().Transform(matrix).RankDown());
         }
         public double AngleBetweenVectorsSin(VectorR3 otherVector)

@@ -37,6 +37,13 @@ namespace LinearAlgebra
                 );
         }
 
+        public static Matrix CreateReflectionMatrix(VectorR2 about)
+        {
+            return new Matrix(
+                new Vector(1-2*(about.X * about.X), -2 * (about.X* about.Y)),
+                new Vector(-2*(about.Y * about.X), 1-2*(about.Y * about.Y)));
+        }
+
         private const double DegreesInRadians = 180;
         public double Y => this[1];
         public double X => this[0];
@@ -76,7 +83,7 @@ namespace LinearAlgebra
             var transformed = base.Transform(m);
             return new VectorR2(transformed);
         }
-        public Matrix CreateAffineMatrix(int changeInX, int changeInY)
+        public static Matrix CreateAffineMatrix(int changeInX, int changeInY)
         {
             return new Matrix(
                 new Vector(1, 0, changeInX),

@@ -257,12 +257,12 @@ namespace LinearAlgebra
             {
                 if (!firstPassed)
                 {
-                    builder.Append($"{item,7:0.00}");
+                    builder.Append($"{item,7:0.000}");
                     firstPassed = true;
                 }
                 else
                 {
-                    builder.Append($", {item,7:0.00}");
+                    builder.Append($", {item,7:0.000}");
                 }
             }
             return builder.ToString();
